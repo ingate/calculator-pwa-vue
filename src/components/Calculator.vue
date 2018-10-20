@@ -5,11 +5,11 @@
             <div class="keypad">
                 <div @click="reset()" class="key">C</div>
                 <div @click="backspace()" class="key double_column pencil">⌫</div>
-                <div @click="append('/')" class="key operator">/</div>
+                <div @click="append('/')" class="key operator">÷</div>
                 <div @click="append('7')" class="key">7</div>
                 <div @click="append('8')" class="key">8</div>
                 <div @click="append('9')" class="key">9</div>
-                <div @click="append('*')" class="key operator">*</div>
+                <div @click="append('*')" class="key operator">×</div>
                 <div @click="append('4')" class="key">4</div>
                 <div @click="append('5')" class="key">5</div>
                 <div @click="append('6')" class="key">6</div>
@@ -123,39 +123,39 @@ export default {
     text-align: right;
     background-color: rgb(53, 53, 53);
     color: white;
-    font-size: 8vmin;
+    font-size: 7vmin;
     padding: 0 3vmin;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
+    border-top: 1px solid rgb(31, 31, 31);
+    border-left: 1px solid rgb(31, 31, 31);
+    border-right: 1px solid rgb(31, 31, 31);
 }
 
 .keypad {
     display: grid;
-    grid-template: repeat(5, 10vmin) / repeat(4, 10vmin);
-    font-size: 5vmin;
+    grid-template: repeat(5, 7vmin) / repeat(4, 10vmin);
+    font-size: 4vmin;
 }
 
 .key {
     text-align: center;
     vertical-align: center;
-    line-height: 10vmin;
+    line-height: 7vmin;
     /* background-color: lightgrey; */
     background: padding-box radial-gradient(rgb(194, 194, 194), lightgrey);
-    color: black;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
+    color: rgb(20, 20, 20);
+    border-top: 1px solid rgb(31, 31, 31);
+    border-left: 1px solid rgb(31, 31, 31);
 }
 
 .operator {
     /* background-color: #f98930; */
     background: padding-box radial-gradient(#fd790d, #f19447);
     color: white;
-    border-right: 1px solid black;
+    border-right: 1px solid rgb(31, 31, 31);
 }
 
 .last_row {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid rgb(31, 31, 31);
 }
 
 .double_column {
@@ -169,13 +169,13 @@ export default {
 @media (min-width: 640px) {
     .calculator {
         width: 40vmin;
-        height: 80vmin;
+        height: 70vmin;
     }
 }
 
 @media (max-width: 640px) and (orientation: portrait) {
     body {
-        background-color: black;
+        background-color: rgb(31, 31, 31);
     }
 
     .wrapper {
@@ -193,18 +193,18 @@ export default {
     }
 
     .keypad {
-        grid-template: repeat(5, 25vmin) / repeat(4, 25vmin);
-        font-size: 10vmin;
+        grid-template: repeat(5, 18vmin) / repeat(4, 25vmin);
+        font-size: 8vmin;
     }
 
     .key {
-        line-height: 25vmin;
+        line-height: 18vmin;
     }
 }
 
 @media (max-width: 640px) and (orientation: landscape) {
     body {
-        background-color: black;
+        background-color: rgb(31, 31, 31);
     }
 
     .calculator {
@@ -220,7 +220,7 @@ export default {
 
     .keypad {
         grid-template: repeat(5, 20vmin) / repeat(4, 20vmin);
-        font-size: 10vmin;
+        font-size: 8vmin;
     }
 
     .key {
