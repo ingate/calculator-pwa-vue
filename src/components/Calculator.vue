@@ -50,23 +50,27 @@ export default {
       this.display = this.appendToExpression(display, char)
     },
     appendToExpression(display, char) {
-      const operators = ['-', '+', '*', '/']
-      // const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-      // const naturlaNumbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-      // const firstChar = display.toString().substring(0, 1)
+      const digitChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+      const operatorChars = ['-', '+', '*', '/']
       const lastChar = display.substring(display.length - 1)
       const lastNumber = display.length >=1 && display.match(/(.*[-+/*])?(.*)/) ? display.match(/(.*[-+/*])?(.*)/)[2] : display
       if (display.length === 1 && lastChar === '0' && char === '0') {
         // don't append 0 to 0
         return display
-      } else if (display.length === 0 && char === '.') {
-        // if first typed char is '.' then return '0.'
-        return '0.'
-      } else if (operators.includes(char) && lastChar === char) {
+      } else if (operatorChars.includes(char) && lastChar === char) {
         // don't duplicate operators
         return display
-      } else if (char === '.' && lastNumber && lastNumber.includes('.')) {
-        // don't duplicate point delimeter (.)
+      } else if (operatorChars.includes(char) && operatorChars.includes(lastChar) && lastChar !== char) {
+        // allow replace operators
+        return '' + display.substring(0, display.length - 1) + 'char'
+      } else if (char === '.' && display.length === 0) {
+        // if first typed char is '.' then return '0.'
+        return '0.'
+      } else if (char === '.' && lastNumber && lastNumber.includes('.')) { // FIXME: if no lastNumber?
+        // don't duplicate point delimeter in last number (.)
+        return display
+      } else if (lastChar === '.' && !digitChars.includes(char)) {
+        // don't add non digits after point delimeter (.)
         return display
       } else {
         // append char to display
@@ -85,7 +89,12 @@ export default {
   },
   computed: {
     result() {
-      return this.parse(this.display)
+      const display = this.display.toString()
+      const operatorChars = ['-', '+', '*', '/']
+      const lastChar = display.substring(display.length - 1)
+      // if last char is operator, parse without this operator
+      const expression = operatorChars.includes(lastChar) ? display.substring(0, display.length - 1) : display
+      return this.parse(expression)
     }
   }
 }
