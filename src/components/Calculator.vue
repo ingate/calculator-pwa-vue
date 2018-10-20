@@ -3,8 +3,8 @@
         <div class="calculator">
             <div class="display">{{display || 0}}</div>
             <div class="keypad">
-                <div @click="backspace()" class="key pencil">⌫</div>
-                <div @click="reset()" class="key double_column">C</div>
+                <div @click="reset()" class="key">C</div>
+                <div @click="backspace()" class="key double_column pencil">⌫</div>
                 <div @click="append('/')" class="key operator">/</div>
                 <div @click="append('7')" class="key">7</div>
                 <div @click="append('8')" class="key">8</div>
@@ -42,7 +42,8 @@ export default {
       this.display = ''
     },
     backspace() {
-      this.display = this.display.toString().substring(0, this.display.length - 1)
+      const display = this.display.toString()
+      this.display = display.substring(0, display.length - 1)
     },
     append(char) {
       const display = this.display.toString()
