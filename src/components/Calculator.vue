@@ -4,23 +4,23 @@
             <div class="display">{{display || 0}}</div>
             <div class="keypad">
                 <div @click="reset()" class="key">C</div>
-                <div @click="backspace()" class="key double_column pencil">⌫</div>
+                <div @click="backspace()" class="key pencil">⌫</div>
                 <div @click="append('÷')" class="key operator">÷</div>
+                <div @click="append('×')" class="key operator last_column">×</div>
                 <div @click="append('7')" class="key">7</div>
                 <div @click="append('8')" class="key">8</div>
                 <div @click="append('9')" class="key">9</div>
-                <div @click="append('×')" class="key operator">×</div>
+                <div @click="append('-')" class="key operator last_column">-</div>
                 <div @click="append('4')" class="key">4</div>
                 <div @click="append('5')" class="key">5</div>
                 <div @click="append('6')" class="key">6</div>
-                <div @click="append('-')" class="key operator">-</div>
+                <div @click="append('+')" class="key operator last_column">+</div>
                 <div @click="append('1')" class="key">1</div>
                 <div @click="append('2')" class="key">2</div>
                 <div @click="append('3')" class="key">3</div>
-                <div @click="append('+')" class="key operator">+</div>
+                <div @click="displayResult()" class="key operator double_row last_column last_row">=</div>
                 <div @click="append('0')" class="key double_column last_row">0</div>
                 <div @click="append('.')" class="key last_row">.</div>
-                <div @click="displayResult()" class="key operator last_row">=</div>
             </div>
         </div>
     </div>
@@ -111,6 +111,12 @@ export default {
     align-items: center;
     height: 100vh;
     width: 100vw;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .calculator {
@@ -131,6 +137,13 @@ export default {
     border-top: 1px solid rgb(31, 31, 31);
     border-left: 1px solid rgb(31, 31, 31);
     border-right: 1px solid rgb(31, 31, 31);
+    -webkit-touch-callout: all;
+    -webkit-user-select: all;
+    -khtml-user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+    user-select: all;
+    touch-action: none;
 }
 
 .keypad {
@@ -154,6 +167,9 @@ export default {
     /* background-color: #f98930; */
     background: padding-box radial-gradient(#fd790d, #f19447);
     color: white;
+}
+
+.last_column {
     border-right: 1px solid rgb(31, 31, 31);
 }
 
@@ -163,6 +179,11 @@ export default {
 
 .double_column {
     grid-column: span 2;
+}
+
+.double_row {
+    grid-row: span 2;
+    line-height: 14vmin;
 }
 
 .pencil {
@@ -203,6 +224,10 @@ export default {
     .key {
         line-height: 18vmin;
     }
+
+    .double_row {
+        line-height: 36vmin;
+    }
 }
 
 @media (max-width: 640px) and (orientation: landscape) {
@@ -228,6 +253,10 @@ export default {
 
     .key {
         line-height: 20vmin;
+    }
+
+    .double_row {
+        line-height: 40vmin;
     }
 }
 </style>
