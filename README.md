@@ -1,4 +1,5 @@
 # calculator-pwa-vue
+Preview available at: http://pwa-calculator.surge.sh/
 
 ## Project setup
 ```
