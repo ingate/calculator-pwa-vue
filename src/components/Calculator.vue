@@ -35,15 +35,6 @@ export default {
     }
   },
   methods: {
-    parse(string) {
-      let result;
-      try {
-        result = eval(string)
-      } catch (e) {
-        result = null
-      }
-      return result
-    },
     displayResult() {
       this.display = this.result
     },
@@ -51,10 +42,44 @@ export default {
       this.display = ''
     },
     backspace() {
-      this.display = this.display.substring(0, this.display.length - 1)
+      this.display = this.display.toString().substring(0, this.display.length - 1)
     },
-    append(string) {
-      this.display = '' + this.display + string
+    append(char) {
+      const display = this.display.toString()
+      this.display = this.appendToExpression(display, char)
+    },
+    appendToExpression(display, char) {
+      const operators = ['-', '+', '*', '/']
+      // const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+      // const naturlaNumbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+      // const firstChar = display.toString().substring(0, 1)
+      const lastChar = display.substring(display.length - 1)
+      const lastNumber = display.length >=1 && display.match(/(.*[-+/*])?(.*)/) ? display.match(/(.*[-+/*])?(.*)/)[2] : display
+      if (display.length === 1 && lastChar === '0' && char === '0') {
+        // don't append 0 to 0
+        return display
+      } else if (display.length === 0 && char === '.') {
+        // if first typed char is '.' then return '0.'
+        return '0.'
+      } else if (operators.includes(char) && lastChar === char) {
+        // don't duplicate operators
+        return display
+      } else if (char === '.' && lastNumber && lastNumber.includes('.')) {
+        // don't duplicate point delimeter (.)
+        return display
+      } else {
+        // append char to display
+        return '' + display + char
+      }
+    },
+    parse(string) {
+      let result;
+      try {
+        result = eval(string)
+      } catch (e) {
+        result = ''
+      }
+      return result
     }
   },
   computed: {
