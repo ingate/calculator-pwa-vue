@@ -1,27 +1,26 @@
 <template>
     <div class="wrapper">
         <div class="calculator">
-            <div class="display">{{display}}</div>
+            <div class="display">{{display || 0}}</div>
             <div class="keypad">
-                <div class="key">C</div>
-                <div class="key pencil">⌫</div>
-                <div class="key">+/-</div>
-                <div class="key operator">/</div>
-                <div class="key">7</div>
-                <div class="key">8</div>
-                <div class="key">9</div>
-                <div class="key operator">x</div>
-                <div class="key">4</div>
-                <div class="key">5</div>
-                <div class="key">6</div>
-                <div class="key operator">-</div>
-                <div class="key">1</div>
-                <div class="key">2</div>
-                <div class="key">3</div>
-                <div class="key operator">+</div>
-                <div class="key double_column last_row">0</div>
-                <div class="key last_row">.</div>
-                <div class="key operator last_row">=</div>
+                <div @click="backspace()" class="key pencil">⌫</div>
+                <div @click="reset()" class="key double_column">C</div>
+                <div @click="append('/')" class="key operator">/</div>
+                <div @click="append('7')" class="key">7</div>
+                <div @click="append('8')" class="key">8</div>
+                <div @click="append('9')" class="key">9</div>
+                <div @click="append('*')" class="key operator">*</div>
+                <div @click="append('4')" class="key">4</div>
+                <div @click="append('5')" class="key">5</div>
+                <div @click="append('6')" class="key">6</div>
+                <div @click="append('-')" class="key operator">-</div>
+                <div @click="append('1')" class="key">1</div>
+                <div @click="append('2')" class="key">2</div>
+                <div @click="append('3')" class="key">3</div>
+                <div @click="append('+')" class="key operator">+</div>
+                <div @click="append('0')" class="key double_column last_row">0</div>
+                <div @click="append('.')" class="key last_row">.</div>
+                <div @click="displayResult()" class="key operator last_row">=</div>
             </div>
         </div>
     </div>
@@ -32,7 +31,35 @@ export default {
   name: 'Calculator',
   data() {
     return {
-      display: 0
+      display: ''
+    }
+  },
+  methods: {
+    parse(string) {
+      let result;
+      try {
+        result = eval(string)
+      } catch (e) {
+        result = null
+      }
+      return result
+    },
+    displayResult() {
+      this.display = this.result
+    },
+    reset() {
+      this.display = ''
+    },
+    backspace() {
+      this.display = this.display.substring(0, this.display.length - 1)
+    },
+    append(string) {
+      this.display = '' + this.display + string
+    }
+  },
+  computed: {
+    result() {
+      return this.parse(this.display)
     }
   }
 }
