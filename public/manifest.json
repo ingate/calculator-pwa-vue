@@ -1,6 +1,6 @@
 {
-  "name": "calculator-pwa-vue",
-  "short_name": "calculator-pwa-vue",
+  "name": "Calculator App",
+  "short_name": "Calculator",
   "icons": [
     {
       "src": "/img/icons/android-chrome-192x192.png",
