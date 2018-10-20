@@ -51,7 +51,6 @@ export default {
     },
     appendToExpression(display, char) {
       const digitChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-      // const operatorChars = ['-', '+', '*', '/']
       const operatorChars = ['-', '+', '×', '÷']
       const lastChar = display.substring(display.length - 1)
       const lastNumber = display.length >=1 && display.match(/(.*[-+/*])?(.*)/) ? display.match(/(.*[-+/*])?(.*)/)[2] : display
@@ -91,7 +90,6 @@ export default {
   computed: {
     result() {
       const display = this.display.toString()
-      // const operatorChars = ['-', '+', '*', '/']
       const operatorChars = ['-', '+', '×', '÷']
       const lastChar = display.substring(display.length - 1)
       // if last char is operator, parse without this operator
@@ -143,7 +141,7 @@ export default {
     -moz-user-select: all;
     -ms-user-select: all;
     user-select: all;
-    touch-action: none;
+    touch-action: pan-x pan-y;
 }
 
 .keypad {
