@@ -5,11 +5,11 @@
             <div class="keypad">
                 <div @click="reset()" class="key">C</div>
                 <div @click="backspace()" class="key double_column pencil">⌫</div>
-                <div @click="append('/')" class="key operator">÷</div>
+                <div @click="append('÷')" class="key operator">÷</div>
                 <div @click="append('7')" class="key">7</div>
                 <div @click="append('8')" class="key">8</div>
                 <div @click="append('9')" class="key">9</div>
-                <div @click="append('*')" class="key operator">×</div>
+                <div @click="append('×')" class="key operator">×</div>
                 <div @click="append('4')" class="key">4</div>
                 <div @click="append('5')" class="key">5</div>
                 <div @click="append('6')" class="key">6</div>
@@ -51,7 +51,8 @@ export default {
     },
     appendToExpression(display, char) {
       const digitChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-      const operatorChars = ['-', '+', '*', '/']
+      // const operatorChars = ['-', '+', '*', '/']
+      const operatorChars = ['-', '+', '×', '÷']
       const lastChar = display.substring(display.length - 1)
       const lastNumber = display.length >=1 && display.match(/(.*[-+/*])?(.*)/) ? display.match(/(.*[-+/*])?(.*)/)[2] : display
       if (display.length === 1 && lastChar === '0' && char === '0') {
@@ -90,11 +91,13 @@ export default {
   computed: {
     result() {
       const display = this.display.toString()
-      const operatorChars = ['-', '+', '*', '/']
+      // const operatorChars = ['-', '+', '*', '/']
+      const operatorChars = ['-', '+', '×', '÷']
       const lastChar = display.substring(display.length - 1)
       // if last char is operator, parse without this operator
       const expression = operatorChars.includes(lastChar) ? display.substring(0, display.length - 1) : display
-      return this.parse(expression)
+      // replace nice operators with native
+      return this.parse(expression.replace(/×/g, '*').replace(/÷/g, '/'))
     }
   }
 }
