@@ -1,10 +1,10 @@
 <template>
     <div class="wrapper">
         <div class="calculator">
-            <div class="display">{{display || 0}}</div>
+            <div class="display">{{display}}</div>
             <div class="keypad">
-                <div @click="reset()" class="key">C</div>
-                <div @click="backspace()" class="key pencil">⌫</div>
+                <div @click="reset()" class="key special_key">C</div>
+                <div @click="backspace()" class="key special_key pencil">⌫</div>
                 <div @click="append('÷')" class="key operator">÷</div>
                 <div @click="append('×')" class="key operator last_column">×</div>
                 <div @click="append('7')" class="key">7</div>
@@ -27,75 +27,48 @@
 </template>
 
 <script>
+import { appendToExpression, evaluateExpression } from '../helpers/mathExpression'
 export default {
   name: 'Calculator',
   data() {
     return {
-      display: ''
+      display: '0'
     }
   },
   methods: {
+    checkIsNaN() {
+        const val = this.display
+        if (val !== val) {
+          this.display = '0'
+        }
+    },
     displayResult() {
       this.display = this.result
     },
     reset() {
-      this.display = ''
+      this.display = '0'
     },
     backspace() {
-      const display = this.display.toString()
-      this.display = display.substring(0, display.length - 1)
+      // replace NaN with '0'
+      this.checkIsNaN(this.display)
+      const expression = this.display.toString()
+      const result = expression.substring(0, expression.length - 1)
+      this.display = result.length === 0 ? '0' : result
     },
     append(char) {
-      const display = this.display.toString()
-      this.display = this.appendToExpression(display, char)
-    },
-    appendToExpression(display, char) {
-      const digitChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-      const operatorChars = ['-', '+', '×', '÷']
-      const lastChar = display.substring(display.length - 1)
-      const lastNumber = display.length >=1 && display.match(/(.*[-+/*])?(.*)/) ? display.match(/(.*[-+/*])?(.*)/)[2] : display
-      if (display.length === 1 && lastChar === '0' && char === '0') {
-        // don't append 0 to 0
-        return display
-      } else if (operatorChars.includes(char) && lastChar === char) {
-        // don't duplicate operators
-        return display
-      } else if (operatorChars.includes(char) && operatorChars.includes(lastChar) && lastChar !== char) {
-        // allow replace operators
-        return '' + display.substring(0, display.length - 1) + 'char'
-      } else if (char === '.' && display.length === 0) {
-        // if first typed char is '.' then return '0.'
-        return '0.'
-      } else if (char === '.' && lastNumber && lastNumber.includes('.')) { // FIXME: if no lastNumber?
-        // don't duplicate point delimeter in last number (.)
-        return display
-      } else if (lastChar === '.' && !digitChars.includes(char)) {
-        // don't add non digits after point delimeter (.)
-        return display
-      } else {
-        // append char to display
-        return '' + display + char
-      }
-    },
-    parse(string) {
-      let result;
-      try {
-        result = eval(string)
-      } catch (e) {
-        result = ''
-      }
-      return result
+      // replace NaN with '0'
+      this.checkIsNaN(this.display)
+      const expression = this.display.toString()
+      // filter via custom function
+      this.display = appendToExpression(expression, char)
     }
   },
   computed: {
     result() {
-      const display = this.display.toString()
-      const operatorChars = ['-', '+', '×', '÷']
-      const lastChar = display.substring(display.length - 1)
-      // if last char is operator, parse without this operator
-      const expression = operatorChars.includes(lastChar) ? display.substring(0, display.length - 1) : display
-      // replace nice operators with native
-      return this.parse(expression.replace(/×/g, '*').replace(/÷/g, '/'))
+      if (this.display === undefined) { return NaN }
+      if (this.display === '') { return '' }
+      if (this.display === '0') { return '0' }
+      return evaluateExpression(this.display)
     }
   }
 }
@@ -115,6 +88,7 @@ export default {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    touch-action: none;
 }
 
 .calculator {
@@ -148,6 +122,7 @@ export default {
     display: grid;
     grid-template: repeat(5, 7vmin) / repeat(4, 10vmin);
     font-size: 4vmin;
+    touch-action: none;
 }
 
 .key {
@@ -159,6 +134,10 @@ export default {
     color: rgb(20, 20, 20);
     border-top: 1px solid rgb(31, 31, 31);
     border-left: 1px solid rgb(31, 31, 31);
+}
+
+.special_key {
+    color: #c55a03;
 }
 
 .operator {
@@ -185,7 +164,7 @@ export default {
 }
 
 .pencil {
-    font-size: 0.7em;
+    font-size: 0.85em;
 }
 
 @media (min-width: 640px) {
