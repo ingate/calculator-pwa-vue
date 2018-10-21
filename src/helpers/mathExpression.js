@@ -87,18 +87,16 @@ function evaluateExpression(expression) {
     let result;
     try {
         // replace nice operators with native
-        let nativeExpression = expression
+        let native = expression
             .toString()
             .replace(/×/g, '*')
             .replace(/÷/g, '/');
-        const lastChar = nativeExpression.substring(
-            nativeExpression.length - 1
-        );
-        // if last char is operator, process without this operator
-        nativeExpression = ['-', '+', '*', '/'].includes(lastChar)
-            ? nativeExpression.substring(0, nativeExpression.length - 1)
-            : nativeExpression;
-        result = eval(nativeExpression);
+        const lastChar = native.substring(native.length - 1);
+        // if last char is operator or point, process without this char
+        if (['-', '+', '*', '/', '.'].includes(lastChar)) {
+            native = native.substring(0, native.length - 1);
+        }
+        result = eval(native);
         // replace non numbers (like 'undefined') with NaN
         if (isNaN(result)) {
             result = NaN;
