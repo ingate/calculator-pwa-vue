@@ -5,6 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "surge": "surge dist/ https://pwa-calculator.surge.sh",
+    "deploy": "vue-cli-service build && surge dist/ https://pwa-calculator.surge.sh",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -16,6 +18,7 @@
     "@vue/cli-plugin-eslint": "^3.0.4",
     "@vue/cli-plugin-pwa": "^3.0.4",
     "@vue/cli-service": "^3.0.4",
+    "surge": "^0.20.1",
     "vue-template-compiler": "^2.5.17"
   }
 }
